@@ -4,7 +4,8 @@
 ## Loading and preprocessing the data
 
 
-```{r}
+
+```r
 data <- data.frame(read.table(unz("activity.zip", "activity.csv"), 
                               sep=",", header = TRUE, 
                               colClasses = c("numeric", "Date", "factor")))
@@ -12,21 +13,27 @@ data <- data.frame(read.table(unz("activity.zip", "activity.csv"),
 
 ## What is mean total number of steps taken per day?
 
-```{r fig.height = 4}
 
+```r
 stepsPerDay <- aggregate(data$steps, list(date = data$date), sum)
 barplot(stepsPerDay$x, names.arg = stepsPerDay$date, 
         main = "Steps per day", ylab = "Number of steps", xlab = "Date")
+```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+
+```r
 stepsMean <- mean(stepsPerDay$x, na.rm = TRUE)
 stepsMedian <- median(stepsPerDay$x, na.rm = TRUE)
 ```
 
-The mean number of steps per day was `r as.character(round(stepsMean,2))` and the median number of 
-steps per day was `r as.character(round(stepsMedian,2))`.
+The mean number of steps per day was 10766.19 and the median number of 
+steps per day was 10765.
 
 ## What is the average daily activity pattern?
 
-```{r fig.height = 4}
+
+```r
 library(stringr)
 # extract complete cases
 dataComplete <- data[complete.cases(data),]
@@ -53,25 +60,28 @@ stepsPerInterval <- transform(stepsPerInterval,
 plot(stepsPerInterval, type = "l", 
      main = "Mean number of steps\nper 5 Minutes interval", 
      ylab = "Number of Steps", xlab = "time")
+```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
+```r
 # find max
 maxInt <- stepsPerInterval[stepsPerInterval$x == max(stepsPerInterval$x),1]
 maxIntMin5 <- stepsPerInterval[stepsPerInterval$x == max(stepsPerInterval$x),
                                1]-300
-
 ```
 
-The most active time was between `r substr(maxIntMin5,12,16)` 
-*[substr(maxIntMin5,12,16)]* and `r substr(maxInt,12,16)` *[substr(maxInt,12,16)]*
+The most active time was between 08:30 
+*[substr(maxIntMin5,12,16)]* and 08:35 *[substr(maxInt,12,16)]*
 
 ## Imputing missing values
 
-```{r}
-naNumb = sum(is.na(data[1]))
 
+```r
+naNumb = sum(is.na(data[1]))
 ```
 
-There data contains `r naNumb` missing values. Analyzing the file it stands out
+There data contains 2304 missing values. Analyzing the file it stands out
 that thesw are not single missing values, but there are always complete days 
 that are missing.  
 
@@ -80,12 +90,19 @@ with the mean of the values measured on the same weekday and on the same
 time interval.
 
 
-```{r fig.height = 4}
+
+```r
 # setting language to english - needed for weekday names. 
 # This is valid only for OSX
 # Other operating systems would need different values)
 Sys.setlocale("LC_TIME", "en_US")
+```
 
+```
+## [1] "en_US"
+```
+
+```r
 data2 <- data
 for(x in 1:length(data[,1])) {
     if (is.na(data2$steps[x])){
@@ -98,21 +115,25 @@ for(x in 1:length(data[,1])) {
 stepsPerDay2 <- aggregate(data2$steps, list(date = data2$date), sum)
 barplot(stepsPerDay2$x, names.arg = stepsPerDay2$date, 
         main = "Steps per day", ylab = "Number of steps", xlab = "Date")
-stepsMean2 <- mean(stepsPerDay2$x)
-stepsMedian2 <- median(stepsPerDay2$x)
-
 ```
 
-After imputting missing values the mean is now `r as.character(round(stepsMean2,2))` 
-steps and the median is `r as.character(round(stepsMedian2,2))` steps.  
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+
+```r
+stepsMean2 <- mean(stepsPerDay2$x)
+stepsMedian2 <- median(stepsPerDay2$x)
+```
+
+After imputting missing values the mean is now 10821.21 
+steps and the median is 11015 steps.  
 The difference compared to before is thus 
-`r as.character(round(abs(stepsMean - stepsMean2),2))` steps for the mean and 
-`r as.character(round(abs(stepsMedian - stepsMedian2),2))` steps for the median.
+55.02 steps for the mean and 
+250 steps for the median.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r fig.height = 6}
 
+```r
 # factor for weekday vs weekend
 
 dayarray = weekdays(data2$date)
@@ -157,6 +178,11 @@ plot(subset(stepsPerInterval2, kindOfDay == "weekend")$interval,subset(stepsPerI
 plot(subset(stepsPerInterval2, kindOfDay == "weekday")$interval,subset(stepsPerInterval2, kindOfDay == "weekday")$x, type = "l", 
      main = "weekday", 
      ylab = "Number of Steps", xlab = "time", ylim = c(0,250))
+```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
+```r
 par(mfrow = c(1, 1))
 par(mar=temp)
 ```
