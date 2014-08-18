@@ -21,8 +21,9 @@ stepsMean <- mean(stepsPerDay$x, na.rm = TRUE)
 stepsMedian <- median(stepsPerDay$x, na.rm = TRUE)
 ```
 
-The mean number of steps per day was `r as.character(round(stepsMean,2))` and the median number of 
-steps per day was `r as.character(round(stepsMedian,2))`.
+The mean number of steps per day was `r as.character(round(stepsMean,2))` 
+and the median number of steps per day was 
+`r as.character(round(stepsMedian,2))`.
 
 ## What is the average daily activity pattern?
 
@@ -62,7 +63,8 @@ maxIntMin5 <- stepsPerInterval[stepsPerInterval$x == max(stepsPerInterval$x),
 ```
 
 The most active time was between `r substr(maxIntMin5,12,16)` 
-*[substr(maxIntMin5,12,16)]* and `r substr(maxInt,12,16)` *[substr(maxInt,12,16)]*
+*[substr(maxIntMin5,12,16)]* and 
+`r substr(maxInt,12,16)` *[substr(maxInt,12,16)]*
 
 ## Imputing missing values
 
@@ -90,8 +92,8 @@ data2 <- data
 for(x in 1:length(data[,1])) {
     if (is.na(data2$steps[x])){
         data2$steps[x] <- mean(subset(data,
-((data[,3]) == data2$interval[x])&(weekdays(data[,2]) == weekdays(data2$date[x])))[,1],
-                     na.rm = TRUE)
+((data[,3]) == data2$interval[x])&
+    (weekdays(data[,2]) == weekdays(data2$date[x])))[,1], na.rm = TRUE)
         } 
 }
 
@@ -103,8 +105,9 @@ stepsMedian2 <- median(stepsPerDay2$x)
 
 ```
 
-After imputting missing values the mean is now `r as.character(round(stepsMean2,2))` 
-steps and the median is `r as.character(round(stepsMedian2,2))` steps.  
+After imputting missing values the mean is now 
+`r as.character(round(stepsMean2,2))` steps and the median is 
+`r as.character(round(stepsMedian2,2))` steps.  
 The difference compared to before is thus 
 `r as.character(round(abs(stepsMean - stepsMean2),2))` steps for the mean and 
 `r as.character(round(abs(stepsMedian - stepsMedian2),2))` steps for the median.
@@ -130,7 +133,7 @@ data2 <- cbind(data2, dayarray)
 
 # aggregate data
 stepsPerInterval2 <- aggregate(data2$steps, 
-                              list(interval = data2$interval, kindOfDay = data2$dayarray), mean)
+            list(interval = data2$interval, kindOfDay = data2$dayarray), mean)
 # sort intervals and transform them into time 
 stepsPerInterval2 <- transform(stepsPerInterval2, 
                               interval = as.numeric(as.character(interval)))
@@ -151,10 +154,12 @@ stepsPerInterval2 <- transform(stepsPerInterval2,
 par(mfrow = c(2, 1))
 temp = par("mar")
 par(mar = c(4.1, 4.1, 2.1, 2.1))
-plot(subset(stepsPerInterval2, kindOfDay == "weekend")$interval,subset(stepsPerInterval2, kindOfDay == "weekend")$x, type = "l", 
+plot(subset(stepsPerInterval2, kindOfDay == "weekend")$interval,
+     subset(stepsPerInterval2, kindOfDay == "weekend")$x, type = "l", 
      main = "weekend", 
      ylab = "Number of Steps", xlab = "", ylim = c(0,250))
-plot(subset(stepsPerInterval2, kindOfDay == "weekday")$interval,subset(stepsPerInterval2, kindOfDay == "weekday")$x, type = "l", 
+plot(subset(stepsPerInterval2, kindOfDay == "weekday")$interval,
+     subset(stepsPerInterval2, kindOfDay == "weekday")$x, type = "l", 
      main = "weekday", 
      ylab = "Number of Steps", xlab = "time", ylim = c(0,250))
 par(mfrow = c(1, 1))

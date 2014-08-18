@@ -209,8 +209,9 @@ barplot(stepsPerDay$x, names.arg = stepsPerDay$date,
 stepsMedian &lt;- median(stepsPerDay$x, na.rm = TRUE)
 </code></pre>
 
-<p>The mean number of steps per day was 10766.19 and the median number of 
-steps per day was 10765.</p>
+<p>The mean number of steps per day was 10766.19 
+and the median number of steps per day was 
+10765.</p>
 
 <h2>What is the average daily activity pattern?</h2>
 
@@ -251,7 +252,8 @@ maxIntMin5 &lt;- stepsPerInterval[stepsPerInterval$x == max(stepsPerInterval$x),
 </code></pre>
 
 <p>The most active time was between 08:30 
-<em>[substr(maxIntMin5,12,16)]</em> and 08:35 <em>[substr(maxInt,12,16)]</em></p>
+<em>[substr(maxIntMin5,12,16)]</em> and 
+08:35 <em>[substr(maxInt,12,16)]</em></p>
 
 <h2>Imputing missing values</h2>
 
@@ -279,8 +281,8 @@ Sys.setlocale(&quot;LC_TIME&quot;, &quot;en_US&quot;)
 for(x in 1:length(data[,1])) {
     if (is.na(data2$steps[x])){
         data2$steps[x] &lt;- mean(subset(data,
-((data[,3]) == data2$interval[x])&amp;(weekdays(data[,2]) == weekdays(data2$date[x])))[,1],
-                     na.rm = TRUE)
+((data[,3]) == data2$interval[x])&amp;
+    (weekdays(data[,2]) == weekdays(data2$date[x])))[,1], na.rm = TRUE)
         } 
 }
 
@@ -295,8 +297,9 @@ barplot(stepsPerDay2$x, names.arg = stepsPerDay2$date,
 stepsMedian2 &lt;- median(stepsPerDay2$x)
 </code></pre>
 
-<p>After imputting missing values the mean is now 10821.21 
-steps and the median is 11015 steps.<br/>
+<p>After imputting missing values the mean is now 
+10821.21 steps and the median is 
+11015 steps.<br/>
 The difference compared to before is thus 
 55.02 steps for the mean and 
 250 steps for the median.</p>
@@ -320,7 +323,7 @@ data2 &lt;- cbind(data2, dayarray)
 
 # aggregate data
 stepsPerInterval2 &lt;- aggregate(data2$steps, 
-                              list(interval = data2$interval, kindOfDay = data2$dayarray), mean)
+            list(interval = data2$interval, kindOfDay = data2$dayarray), mean)
 # sort intervals and transform them into time 
 stepsPerInterval2 &lt;- transform(stepsPerInterval2, 
                               interval = as.numeric(as.character(interval)))
@@ -341,10 +344,12 @@ stepsPerInterval2 &lt;- transform(stepsPerInterval2,
 par(mfrow = c(2, 1))
 temp = par(&quot;mar&quot;)
 par(mar = c(4.1, 4.1, 2.1, 2.1))
-plot(subset(stepsPerInterval2, kindOfDay == &quot;weekend&quot;)$interval,subset(stepsPerInterval2, kindOfDay == &quot;weekend&quot;)$x, type = &quot;l&quot;, 
+plot(subset(stepsPerInterval2, kindOfDay == &quot;weekend&quot;)$interval,
+     subset(stepsPerInterval2, kindOfDay == &quot;weekend&quot;)$x, type = &quot;l&quot;, 
      main = &quot;weekend&quot;, 
      ylab = &quot;Number of Steps&quot;, xlab = &quot;&quot;, ylim = c(0,250))
-plot(subset(stepsPerInterval2, kindOfDay == &quot;weekday&quot;)$interval,subset(stepsPerInterval2, kindOfDay == &quot;weekday&quot;)$x, type = &quot;l&quot;, 
+plot(subset(stepsPerInterval2, kindOfDay == &quot;weekday&quot;)$interval,
+     subset(stepsPerInterval2, kindOfDay == &quot;weekday&quot;)$x, type = &quot;l&quot;, 
      main = &quot;weekday&quot;, 
      ylab = &quot;Number of Steps&quot;, xlab = &quot;time&quot;, ylim = c(0,250))
 </code></pre>

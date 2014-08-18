@@ -27,8 +27,9 @@ stepsMean <- mean(stepsPerDay$x, na.rm = TRUE)
 stepsMedian <- median(stepsPerDay$x, na.rm = TRUE)
 ```
 
-The mean number of steps per day was 10766.19 and the median number of 
-steps per day was 10765.
+The mean number of steps per day was 10766.19 
+and the median number of steps per day was 
+10765.
 
 ## What is the average daily activity pattern?
 
@@ -72,7 +73,8 @@ maxIntMin5 <- stepsPerInterval[stepsPerInterval$x == max(stepsPerInterval$x),
 ```
 
 The most active time was between 08:30 
-*[substr(maxIntMin5,12,16)]* and 08:35 *[substr(maxInt,12,16)]*
+*[substr(maxIntMin5,12,16)]* and 
+08:35 *[substr(maxInt,12,16)]*
 
 ## Imputing missing values
 
@@ -107,8 +109,8 @@ data2 <- data
 for(x in 1:length(data[,1])) {
     if (is.na(data2$steps[x])){
         data2$steps[x] <- mean(subset(data,
-((data[,3]) == data2$interval[x])&(weekdays(data[,2]) == weekdays(data2$date[x])))[,1],
-                     na.rm = TRUE)
+((data[,3]) == data2$interval[x])&
+    (weekdays(data[,2]) == weekdays(data2$date[x])))[,1], na.rm = TRUE)
         } 
 }
 
@@ -124,8 +126,9 @@ stepsMean2 <- mean(stepsPerDay2$x)
 stepsMedian2 <- median(stepsPerDay2$x)
 ```
 
-After imputting missing values the mean is now 10821.21 
-steps and the median is 11015 steps.  
+After imputting missing values the mean is now 
+10821.21 steps and the median is 
+11015 steps.  
 The difference compared to before is thus 
 55.02 steps for the mean and 
 250 steps for the median.
@@ -151,7 +154,7 @@ data2 <- cbind(data2, dayarray)
 
 # aggregate data
 stepsPerInterval2 <- aggregate(data2$steps, 
-                              list(interval = data2$interval, kindOfDay = data2$dayarray), mean)
+            list(interval = data2$interval, kindOfDay = data2$dayarray), mean)
 # sort intervals and transform them into time 
 stepsPerInterval2 <- transform(stepsPerInterval2, 
                               interval = as.numeric(as.character(interval)))
@@ -172,10 +175,12 @@ stepsPerInterval2 <- transform(stepsPerInterval2,
 par(mfrow = c(2, 1))
 temp = par("mar")
 par(mar = c(4.1, 4.1, 2.1, 2.1))
-plot(subset(stepsPerInterval2, kindOfDay == "weekend")$interval,subset(stepsPerInterval2, kindOfDay == "weekend")$x, type = "l", 
+plot(subset(stepsPerInterval2, kindOfDay == "weekend")$interval,
+     subset(stepsPerInterval2, kindOfDay == "weekend")$x, type = "l", 
      main = "weekend", 
      ylab = "Number of Steps", xlab = "", ylim = c(0,250))
-plot(subset(stepsPerInterval2, kindOfDay == "weekday")$interval,subset(stepsPerInterval2, kindOfDay == "weekday")$x, type = "l", 
+plot(subset(stepsPerInterval2, kindOfDay == "weekday")$interval,
+     subset(stepsPerInterval2, kindOfDay == "weekday")$x, type = "l", 
      main = "weekday", 
      ylab = "Number of Steps", xlab = "time", ylim = c(0,250))
 ```
